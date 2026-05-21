@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Physical Sciences Mock Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('dashboard')">
+                <div class="bg-indigo-600 text-white p-2 rounded-lg font-bold tracking-wider">PK</div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-900 leading-tight"> 2026</h1>
+                    <p class="text-xs text-indigo-600 font-medium tracking-wide">Physical Sciences Mock Tests</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleCalculator()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors">
+                    <i class="fa-solid fa-calculator text-indigo-600"></i>
+                    <span>Scientific Calc</span>
+                </button>
+                <div id="auth-status" class="flex items-center space-x-3 text-sm"></div>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-viewport" class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
+        </main>
+
+    <div id="calc-widget" class="hidden fixed bottom-10 right-10 w-72 bg-slate-900 text-white rounded-xl shadow-2xl border border-slate-700 z-50 overflow-hidden select-none">
+        <div id="calc-header" class="draggable bg-slate-800 px-4 py-2 flex items-center justify-between border-b border-slate-700">
+            <span class="text-xs font-bold text-slate-300 tracking-wider"><i class="fa-solid fa-microchip mr-2 text-indigo-400"></i>SCIENTIFIC CALCULATOR</span>
+            <button onclick="toggleCalculator()" class="text-slate-400 hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="p-3">
+            <input id="calc-screen" type="text" readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-right text-xl font-mono text-emerald-400 mb-3 focus:outline-none" value="0">
+            <div class="grid grid-cols-4 gap-1.5 text-xs font-mono">
+                <button onclick="calcClear()" class="bg-rose-950 hover:bg-rose-900 text-rose-300 p-2 rounded font-bold transition-colors">C</button>
+                <button onclick="calcInput('(')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded transition-colors">(</button>
+                <button onclick="calcInput(')')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded transition-colors">)</button>
+                <button onclick="calcBackspace()" class="bg-slate-800 hover:bg-slate-700 p-2 rounded transition-colors"><i class="fa-solid fa-delete-left"></i></button>
+                
+                <button onclick="calcFunc('sin(')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-indigo-300 transition-colors">sin</button>
+                <button onclick="calcFunc('cos(')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-indigo-300 transition-colors">cos</button>
+                <button onclick="calcFunc('tan(')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-indigo-300 transition-colors">tan</button>
+                <button onclick="calcInput('/')" class="bg-indigo-950 hover:bg-indigo-900 text-indigo-300 p-2 rounded transition-colors">/</button>
+                
+                <button onclick="calcFunc('log10(')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-indigo-300 transition-colors">log</button>
+                <button onclick="calcFunc('log(')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-indigo-300 transition-colors">ln</button>
+                <button onclick="calcFunc('exp(')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-indigo-300 transition-colors">exp</button>
+                <button onclick="calcInput('*')" class="bg-indigo-950 hover:bg-indigo-900 text-indigo-300 p-2 rounded transition-colors">*</button>
+                
+                <button onclick="calcFunc('sqrt(')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-indigo-300 transition-colors">√</button>
+                <button onclick="calcInput('^')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-indigo-300 transition-colors">^</button>
+                <button onclick="calcInput('pi')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-indigo-300 transition-colors">π</button>
+                <button onclick="calcInput('-')" class="bg-indigo-950 hover:bg-indigo-900 text-indigo-300 p-2 rounded transition-colors">-</button>
+                
+                <button onclick="calcInput('7')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded transition-colors">7</button>
+                <button onclick="calcInput('8')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded transition-colors">8</button>
+                <button onclick="calcInput('9')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded transition-colors">9</button>
+                <button onclick="calcInput('+')" class="bg-indigo-950 hover:bg-indigo-900 text-indigo-300 p-2 rounded row-span-2 flex items-center justify-center h-full transition-colors">+</button>
+                
+                <button onclick="calcInput('4')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded transition-colors">4</button>
+                <button onclick="calcInput('5')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded transition-colors">5</button>
+                <button onclick="calcInput('6')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded transition-colors">6</button>
+
+                <button onclick="calcInput('1')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded transition-colors">1</button>
+                <button onclick="calcInput('2')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded transition-colors">2</button>
+                <button onclick="calcInput('3')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded transition-colors">3</button>
+                <button onclick="calcEvaluate()" class="bg-emerald-600 hover:bg-emerald-500 text-white p-2 rounded row-span-2 flex items-center justify-center h-full text-base font-bold transition-colors">=</button>
+
+                <button onclick="calcInput('0')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded col-span-2 transition-colors">0</button>
+                <button onclick="calcInput('.')" class="bg-slate-700 hover:bg-slate-600 p-2 rounded transition-colors">.</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="questions/test0/full-mocks.js"></script>
+    <script src="questions/test_1/full-mocks_1.js"></script>
+    <script src="questions/test_2/full-mocks_2.js"></script>
+    <script src="questions/test_3/full-mocks_3.js"></script>
+    <script src="questions/test_4/full-mocks_4.js"></script>
+    <script src="questions/test_5/full-mocks_5.js"></script>
+    <script src="questions/test_6/full-mocks_6.js"></script>
+    <script src="questions/test_7/full-mocks_7.js"></script>
+    <script src="questions/test_8/full-mocks_8.js"></script>
+    <script src="questions/test_9/full-mocks_9.js"></script>
+
+    <script src="questions/topic-mocks.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
